@@ -7,13 +7,75 @@
 </head>
 <body>
 
+<!-- <div class="tree">
+    <div onclick="tree_toggle(arguments[0])">
+        <div>Root</div>
+        <ul class="Container">
+            <li class="Node IsRoot ExpandClosed">
+                <div class="Expand"></div>
+                <div class="Content">Item 1</div>
+                <ul class="Container">
+                    <li class="Node ExpandClosed">
+                        <div class="Expand"></div>
+                        <div class="Content">Item 1.1</div>
+                        <ul class="Container">
+                            <li class="Node ExpandLeaf IsLast">
+                                <div class="Expand"></div>
+                                <div class="Content">Item 1.1.2</div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="Node ExpandLeaf IsLast">
+                        <div class="Expand"></div>
+                        <div class="Content">Item 1.2</div>
+                    </li>
+                </ul>
+            </li>
+            <li class="Node IsRoot ExpandClosed">
+                <div class="Expand"></div>
+                <div class="Content">Item 2</div>
+                <ul class="Container">
+                    <li class="Node ExpandLeaf IsLast">
+                        <div class="Expand"></div>
+                        <div class="Content">Item 2.1</div>
+                    </li>
+                </ul>
+            </li>
+            <li class="Node IsRoot ExpandClosed">
+                <div class="Expand"></div>
+                <div class="Content">Item 3</div>
+                <ul class="Container">
+                    <li class="Node ExpandLeaf IsLast">
+                        <div class="Expand"></div>
+                        <div class="Content">Item 3.1</div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div><-->
 
 
     <div class="tree">
         <div onclick="tree_toggle(arguments[0])">
             <div>Root</div>
             <ul class="Container">
-                <li class="Node IsRoot ExpandClosed">
+                <c:forEach items="${tree}" var="element">
+                    <li class="Node ExpandClosed">
+                        <div class="Expand"></div>
+                        <div class="Info" hidden>
+                            <div class="id">${element.id}</div>
+                            <div class="hiId">${element.hiId}</div>
+                            <div class="lev">${element.lev}</div>
+                            <div class="typ">${element.typ}</div>
+                        </div>
+                        <div class="Content">${element.name}</div>
+                        <c:if test="${not empty element.child}">
+                            <ul class="Container"></ul>
+                        </c:if>
+                    </li>
+                </c:forEach>
+                <li class="Node ExpandClosed">
                     <div class="Expand"></div>
                     <div class="Content">Item 1</div>
                     <ul class="Container">
@@ -21,33 +83,33 @@
                             <div class="Expand"></div>
                             <div class="Content">Item 1.1</div>
                             <ul class="Container">
-                                <li class="Node ExpandLeaf IsLast">
+                                <li class="Node ExpandLeaf">
                                     <div class="Expand"></div>
                                     <div class="Content">Item 1.1.2</div>
                                 </li>
                             </ul>
                         </li>
-                        <li class="Node ExpandLeaf IsLast">
+                        <li class="Node ExpandLeaf">
                             <div class="Expand"></div>
                             <div class="Content">Item 1.2</div>
                         </li>
                     </ul>
                 </li>
-                <li class="Node IsRoot ExpandClosed">
+                <li class="Node ExpandClosed">
                     <div class="Expand"></div>
                     <div class="Content">Item 2</div>
                     <ul class="Container">
-                        <li class="Node ExpandLeaf IsLast">
+                        <li class="Node ExpandLeaf">
                             <div class="Expand"></div>
                             <div class="Content">Item 2.1</div>
                         </li>
                     </ul>
                 </li>
-                <li class="Node IsRoot ExpandClosed">
+                <li class="Node ExpandClosed">
                     <div class="Expand"></div>
                     <div class="Content">Item 3</div>
                     <ul class="Container">
-                        <li class="Node ExpandLeaf IsLast">
+                        <li class="Node ExpandLeaf">
                             <div class="Expand"></div>
                             <div class="Content">Item 3.1</div>
                         </li>

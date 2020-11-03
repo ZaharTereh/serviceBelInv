@@ -16,7 +16,7 @@ public class TreeController {
 
     @GetMapping
     public String getTree(Model model){
-        model.addAttribute("tree",treeRepository.getTree());
+        model.addAttribute("tree",treeRepository.getTree(null,null,null));
         return "tree";
     }
 }

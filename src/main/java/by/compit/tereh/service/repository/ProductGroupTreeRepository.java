@@ -27,7 +27,7 @@ public class ProductGroupTreeRepository {
         return tupleList.stream().map(tuple ->
                 ProductGroupTreeDTO.builder()
                         .id((tuple.get("ID",BigDecimal.class)).longValue())
-                        .hiId(convert(tuple.get("HI_ID",BigDecimal.class)))
+                        .hiId(convertToLong(tuple.get("HI_ID",BigDecimal.class)))
                         .leaf((tuple.get("LEAF",BigDecimal.class)).byteValue())
                         .lev((tuple.get("LEV",BigDecimal.class)).byteValue())
                         .name(tuple.get("NAME",String.class))
@@ -36,7 +36,7 @@ public class ProductGroupTreeRepository {
         ).collect(Collectors.toList());
     }
 
-    private Long convert(BigDecimal bigDecimal){
+    private Long convertToLong(BigDecimal bigDecimal){
         if(bigDecimal == null){
             return null;
         }else {
