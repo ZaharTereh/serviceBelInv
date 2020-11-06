@@ -822,6 +822,20 @@ a[data-toggle="collapse"] {
     margin-top: 15px;
 }
 
+.filter-form{
+    display: flex;
+    margin-top: 15px;
+}
+
+.find-hierarchy-list select{
+    width: 200px;
+}
+
+.filter-hierarchy-tree select{
+    width: 200px;
+    margin-right: 1%;
+}
+
 .product-group-list{
     display: flex;
 
@@ -941,11 +955,16 @@ a[data-toggle="collapse"] {
     margin-bottom: 2%;
 }
 
-.find-hierarchy-panel-header{
+
+.find-hierarchy-list{
     display: flex;
 }
 
-.find-hierarchy-header-panel{
+.find-button-div{
+    margin-left: 3%;
+}
+
+.filter-hierarchy-tree{
     display: flex;
     width: 40%;
 }
@@ -977,6 +996,10 @@ a[data-toggle="collapse"] {
 
 .hierarchy-header *{
     margin-top: 2%;
+}
+
+.hierarchy{
+    margin-top: 10%;
 }
 
 .level-data{

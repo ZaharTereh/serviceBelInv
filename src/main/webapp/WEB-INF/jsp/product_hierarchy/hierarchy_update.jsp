@@ -30,9 +30,26 @@
             </div>
         </c:forEach>
     </div>
-    <div class="find-hierarchy-panel-header">
+
+    <div class="find-hierarchy-block">
         <form method="get" action="${pageContext.request.contextPath}/hierarchy_update/get_hierarchy" class="find-form" id="find-form">
-            <div class="find-hierarchy-header-panel">
+            <div class="find-hierarchy-list">
+                <select name="hierarchyId" class="group-hierarchy-list" id="listOfHierarchies"  required>
+                    <option value="0" selected disabled>Иерархия линейки</option>
+                    <c:forEach items="${hierarchies}" var="hierarchy">
+                        <option value="${hierarchy.id}">${hierarchy.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="find-button find-button-div">
+                <button type="submit" form="find-form" class="btn find-button">Поиск</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="filter-hierarchy-tree-block">
+        <form method="get" action="${pageContext.request.contextPath}/hierarchy_update/get_hierarchy" class="filter-form" id="filter-form">
+            <div class="filter-hierarchy-tree">
                 <select name="firstLevelProductGroup" class="group-hierarchy-list" id="firstLevelProductGroup"  required>
                     <option value="0" selected disabled>Бизнес-направление</option>
                     <c:forEach items="${productGroups}" var="productGroup">
@@ -48,11 +65,11 @@
                     <option value="0" selected disabled>Группа продукта</option>
                 </select>
                 <select name="hierarchyGroup" class="hierarchy-list" id="hierarchy-list" required>
-                    <option product-hierarchy="true" value="0" selected disabled>Иерархия линейки</option>
+                    <option product-hierarchy="true" value="0" selected disabled>Название линейки</option>
                 </select>
             </div>
-            <div class="find-button">
-                <button type="submit" form="find-form" class="btn find-button">Поиск</button>
+            <div class="find-button find-button-div">
+                <button type="submit" form="filter-form" class="btn find-button">Фильтр</button>
             </div>
         </form>
     </div>
@@ -227,7 +244,6 @@
 
 
 <script src="${pageContext.request.contextPath}/js/tree.js"></script>
-
 
 <script src="${pageContext.request.contextPath}/js/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/popper/popper.min.js"></script>

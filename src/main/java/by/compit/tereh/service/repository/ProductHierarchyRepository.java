@@ -1,6 +1,7 @@
 package by.compit.tereh.service.repository;
 
 import by.compit.tereh.service.model.product_hierarchy.ProductHierarchy;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,9 @@ public interface ProductHierarchyRepository extends JpaRepository<ProductHierarc
     List<ProductHierarchy> findAllByProductGroup_Id(Long productGroupId);
     List<ProductHierarchy> findProductHierarchiesByName(String name);
     Optional<ProductHierarchy> findById(Long hierarchyId);
+
+    @Query("select id,name from ProductHierarchy")
+    List<ProductHierarchy> findAllNamesAndId();
+
+    List<ProductHierarchy> findAll();
 }

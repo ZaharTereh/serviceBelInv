@@ -68,6 +68,8 @@
                             <div class="hiId">${element.hiId}</div>
                             <div class="lev">${element.lev}</div>
                             <div class="typ">${element.typ}</div>
+                            <div class="realId">${element.realId}</div>
+                            <div class="realHiId">${element.realHiId}</div>
                         </div>
                         <div class="Content">${element.name}</div>
                         <c:if test="${not empty element.child}">

@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductHierarchyService {
@@ -36,6 +38,9 @@ public class ProductHierarchyService {
     @Autowired
     private HierarchyRepository hierarchyRepository;
 
+
+
+
     @Transactional
     public List<FullProductHierarchyDTO> getProductHierarchyByProductGroups(Long pg1, Long pg2, Long pg3){
         List<FullProductHierarchyDTO> fullProductHierarchyDTOList = FullProductHierarchyDTO.toDTOList(hierarchyRepository.getProductHierarchyByProductGroups(pg1, pg2, pg3));
@@ -46,7 +51,6 @@ public class ProductHierarchyService {
         }
         return fullProductHierarchyDTOList;
     }
-
 
     @Transactional
     public FullProductHierarchyDTO findById(Long hierarchyId){
@@ -117,5 +121,19 @@ public class ProductHierarchyService {
     @Transactional
     public List<ProductHierarchy> getProductHierarchyByName(String name){
         return productHierarchyRepository.findProductHierarchiesByName(name);
+    }
+
+    @Transactional
+    public List<ProductHierarchyDTO> findAllNamesAndId(){
+        return productHierarchyRepository.findAll().stream().map(element->ProductHierarchyDTO.builder()
+                    .id(element.getId())
+                    .name(element.getName())
+                    .build())
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<ProductHierarchyDTO> findAll(){
+        return productHierarchyRepository.findAll().stream().map(ProductHierarchyDTO::toDTO).collect(Collectors.toList());
     }
 }

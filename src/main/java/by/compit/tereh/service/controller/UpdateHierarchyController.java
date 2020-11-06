@@ -29,15 +29,17 @@ public class UpdateHierarchyController {
 
 
     @RequestMapping(method = RequestMethod.GET,value = "/get_hierarchy")
-    public String getGetProductHierarchyByGroup(Model model, @RequestParam Long hierarchyGroup){
+    public String getGetProductHierarchyByGroup(Model model, @RequestParam Long hierarchyId){
         model.addAttribute("productGroups",productGroupService.getProductGroupTreeDTOList());
-        model.addAttribute("fullProductHierarchyDTO",productHierarchyService.findById(hierarchyGroup));
+        model.addAttribute("hierarchies",productHierarchyService.findAllNamesAndId());
+        model.addAttribute("fullProductHierarchyDTO",productHierarchyService.findById(hierarchyId));
         return GET_HIERARCHY_UPDATE_VIEW;
     }
 
     @GetMapping
     public String getProductHierarchy(Model model){
         model.addAttribute("productGroups",productGroupService.getProductGroupTreeDTOList());
+        model.addAttribute("hierarchies",productHierarchyService.findAllNamesAndId());
         return GET_HIERARCHY_UPDATE_VIEW;
     }
 
