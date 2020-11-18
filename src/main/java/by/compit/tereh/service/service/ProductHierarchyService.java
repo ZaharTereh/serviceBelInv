@@ -77,6 +77,7 @@ public class ProductHierarchyService {
                 ProductHierCrit crit = productHierCritRepository.findById(struct.getCrit()).get();
                 newLevel.setCriterionList(levelHierarchyRepository.getCriterionList(crit));
                 newLevel.setLevel((struct.getLevel()));
+                newLevel.setProductHierStructId(struct.getId());
                 levels.add(newLevel);
             }
 

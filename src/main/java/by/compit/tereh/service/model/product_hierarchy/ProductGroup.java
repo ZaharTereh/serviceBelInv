@@ -31,6 +31,12 @@ public class ProductGroup {
     @Column(name = "TABLE_NAME")
     private String tableName;
 
+    @Column(name = "PRODUCT_NAME")
+    private String productName;
+
+    @Column(name = "PRODUCT_CODE")
+    private String productCode;
+
     @OneToMany(mappedBy = "productGroup",fetch = FetchType.EAGER)
     @JsonIgnore
     private List<ProductHierarchy> productHierarchies = new ArrayList<>();

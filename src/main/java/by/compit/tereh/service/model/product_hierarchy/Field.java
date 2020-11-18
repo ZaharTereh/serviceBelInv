@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class Field {
     private Long id;
     private String name;
+    private String value;
     private String tableName;
     private String fieldName;
     private String dataType;

@@ -1,6 +1,7 @@
 package by.compit.tereh.service.model.product;
 
 import by.compit.tereh.service.model.product_hierarchy.ProductGroup;
+import by.compit.tereh.service.model.product_hierarchy.ProductHierValue;
 import by.compit.tereh.service.model.product_hierarchy.ProductHierarchy;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Builder
@@ -33,6 +35,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "PRODUCT_HIERARCHY_ID")
     private ProductHierarchy productHierarchy;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductHierValue> productHierValues;
 
     @Column(name = "BN_ID")
     private Long bn_id;

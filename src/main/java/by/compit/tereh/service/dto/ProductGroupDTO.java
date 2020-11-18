@@ -13,6 +13,8 @@ public class ProductGroupDTO {
     private String name;
     private Long hiId;
     private String tableName;
+    private String productName;
+    private String productCode;
 
     public static ProductGroupDTO toDTO(ProductGroup productGroup){
         return ProductGroupDTO.builder()
@@ -20,6 +22,8 @@ public class ProductGroupDTO {
                 .hiId(productGroup.getHiId())
                 .name(productGroup.getName())
                 .tableName(productGroup.getTableName())
+                .productCode(productGroup.getProductCode())
+                .productName(productGroup.getProductName())
                 .build();
     }
 
@@ -30,6 +34,8 @@ public class ProductGroupDTO {
                 " ,\"name\":\"" + name + '\"' +
                 " ,\"hiId\":" + hiId +
                 " ,\"tableName\":\"" + tableName + '\"' +
+                " ,\"productName\":\"" + productName + '\"' +
+                " ,\"productCode\":\"" + productCode + '\"' +
                 '}';
     }
 }

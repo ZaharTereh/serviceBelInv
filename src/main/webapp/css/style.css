@@ -966,7 +966,6 @@ a[data-toggle="collapse"] {
 
 .filter-hierarchy-tree{
     display: flex;
-    width: 40%;
 }
 
 .find-hierarchy-header-panel select{
@@ -1039,7 +1038,9 @@ a[data-toggle="collapse"] {
     margin-left: 5%;
 }
 
+.field-for-level{
 
+}
 
 .product-table{
     height: 250px;

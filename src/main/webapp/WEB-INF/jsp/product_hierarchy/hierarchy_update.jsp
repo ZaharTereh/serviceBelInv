@@ -86,6 +86,8 @@
                 <input type="hidden" class="id" value="${fullProductHierarchyDTO.productHierarchyDTO.id}"/>
                 <input type="hidden" class="productGroupId" value="${fullProductHierarchyDTO.productHierarchyDTO.productGroupDTO.id}">
                 <input type="hidden" class="tableName" value="${fullProductHierarchyDTO.productHierarchyDTO.productGroupDTO.tableName}">
+                <input type="hidden" class="productName" value="${fullProductHierarchyDTO.productHierarchyDTO.productGroupDTO.productName}">
+                <input type="hidden" class="productCode" value="${fullProductHierarchyDTO.productHierarchyDTO.productGroupDTO.productCode}">
                 <hr>
             </div>
 
@@ -97,13 +99,13 @@
                     <div class="level-data">
                         <label class="label-for-select" for="select-criterion-for-level">Название уровня</label>
                         <div class="level-values">
-                            <select name="criterionForLevel" class="form-control criterionForLevel" id="select-criterion-for-level" required>
+                            <select name="criterionForLevel" class="form-control criterionList" id="select-criterion-for-level" productHierStructId="${level.productHierStructId}" required>
                                 <option value="0" selected disabled>Название уровня</option>
                                 <c:forEach items="${level.criterionList}" var="criterion">
                                     <option class="criterionForLevel" value="${criterion.id}">${criterion.name}</option>
                                 </c:forEach>
                             </select>
-                            <div class="product-table">
+                            <div class="field-for-level">
                                 <table class="table table-bordered goodtable">
                                     <thead>
                                         <tr>
@@ -175,18 +177,26 @@
                                                 </c:forEach>
                                             </td>
                                             <td class="id" hidden>${productDTO.product.productId}</td>
-                                            <td class="productCode">${productDTO.product.productCode}</td>
-                                            <c:choose>
-                                                <c:when test = "${fullProductHierarchyDTO.productHierarchyDTO.productGroupDTO.id eq 1}">
-                                                    <td class="NAME">${productDTO.realProduct.get("NAME")}</td>
-                                                </c:when>
-                                                <c:when test = "${fullProductHierarchyDTO.productHierarchyDTO.productGroupDTO.id eq 2}">
-                                                    <td class="PRODUCT_NAME">${productDTO.realProduct.get("PRODUCT_NAME")}</td>
-                                                </c:when>
-                                                <c:when test = "${fullProductHierarchyDTO.productHierarchyDTO.productGroupDTO.id eq 3}">
-                                                    <td class="PRODUCT_NAME">${productDTO.realProduct.get("PRODUCT_NAME")}</td>
-                                                </c:when>
-                                            </c:choose>
+                                            <c:forEach items="${productDTO.realProduct}" var="entry">
+                                                <c:if test="${entry.key eq fullProductHierarchyDTO.productHierarchyDTO.productGroupDTO.productCode}">
+                                                    <td class="productCode">${entry.value}</td>
+                                                </c:if>
+                                            </c:forEach>
+                                            <c:forEach items="${productDTO.realProduct}" var="entry">
+                                                <c:if test="${entry.key eq fullProductHierarchyDTO.productHierarchyDTO.productGroupDTO.productName}">
+                                                    <td class="productName">${entry.value}</td>
+                                                </c:if>
+                                            </c:forEach>
+                                            <td class="productHierValues" hidden>
+                                                <c:forEach items="${productDTO.product.productHierValues}" var="prodValue">
+                                                    <div class="productHierValue">
+                                                        <span data-product class="id">${prodValue.id}</span>
+                                                        <span data-product class="value">${prodValue.value}</span>
+                                                        <span data-product class="productHierarchyStructId">${prodValue.productHierarchyStruct.id}</span>
+                                                        <span data-product class="productHierarchyStructLevel">${prodValue.productHierarchyStruct.level}</span>
+                                                    </div>
+                                                </c:forEach>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </c:if>

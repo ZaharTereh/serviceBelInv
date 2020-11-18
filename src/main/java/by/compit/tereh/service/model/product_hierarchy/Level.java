@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Level {
+    private Long productHierStructId;
     private Integer level;
     private List<Criterion> criterionList;
     private List<Field> fieldList = new ArrayList<>();

@@ -151,31 +151,140 @@ $('.save-change-level-button').on('click',function () {
 });
 
 $('.save-change-product-button').on('click',function () {
-    let data = {};
+
+    let selectedProduct = $(document).find('#product-table tr.selected');
+    if($(selectedProduct).attr("type") === "NEW"){
+        createProduct();
+    }else {
+        let id = [];
+        id.push($(selectedProduct).find('td.id').html());
+        updateProduct(id);
+    }
+
+    /*let data = {};
     data["productsId"] = [];
-    data["fields"] = {};
+    data["fields"] = [];
     data["tableName"] = $(document).find('.hierarchy .tableName').attr("value");
 
     $(document).find('#product-table tr.selected td.id').each(function () {
         data.productsId.push($(this).html());
     })
 
+    //data.fields["\"" + $(this).find('.fieldName').attr("fieldName")+"\""] =
+
     $(this).closest('.level-data').find('.field-for-level tbody tr').each(function () {
-        data.fields["\"" + $(this).find('.fieldName').attr("fieldName")+"\""] = {"value"   : $(this).find('.value input').val(),
-                                                                                 "dataType": $(this).find('.fieldName').attr("dataType")};
+        data.fields.add(
+            {   "fieldName":$(this).find('.fieldName').attr("fieldName"),
+                "value"    : $(this).find('.value input').val(),
+                "dataType" : $(this).find('.fieldName').attr("dataType")});
     });
+
+
+    
+    let url;
+    if(data.productsId.length === 0){
+        url = "http://localhost:8080/hierarchy_update/create-product";
+    }else {
+        url = "http://localhost:8080/hierarchy_update/update-level";
+    }
 
     $.ajax({
         contentType: 'application/json',
         type: "POST",
         dataType: "json",
         data: JSON.stringify(data),
-        url: "http://localhost:8080/hierarchy_update/update_level",
+        url: url,
         success: function (data){
             console.log(data);
         } ,
         fail: function () {
             console.log('error');
         }
-    });
+    });*/
 })
+
+function createProduct(){
+    let data = {};
+    data["productsId"] = [];
+    data["tableName"] = $(document).find('.hierarchy .tableName').attr("value");
+    data["fields"] = [];
+    $(document).find('.level-data .field-for-level tbody tr').each(function () {
+             data.fields.push(
+                 {   "fieldName":$(this).find('.fieldName').attr("fieldName"),
+                     "value"    : $(this).find('.value input').val(),
+                     "dataType" : $(this).find('.fieldName').attr("dataType")});
+    });
+
+    data["hierarchyId"] = $(document).find('.hierarchy .id').attr("value");
+    data["productGroupId"] = $(document).find('.hierarchy .productGroupId').attr("value");
+    let productCodeField = $(document).find('.hierarchy .productCode').attr("value");
+    data.fields.forEach(element => {
+        if(element.fieldName === productCodeField){
+            data["fieldNameProductCode"] = element.value;
+        }
+    });
+
+    data["productHierValues"] = [];
+    $(document).find('.level-of-hierarchy .criterionList').each(function () {
+        data.productHierValues.push({"value":$(this).val(),
+                                     "productHierarchyStruct":{"id":$(this).attr("productHierStructId")}
+        })
+    });
+    console.log(data);
+
+    if(validateCreateProductData()){
+        $.ajax({
+            contentType: 'application/json',
+            type: "POST",
+            dataType: "json",
+            data: JSON.stringify(data),
+            url: "http://localhost:8080/hierarchy_update/create-product",
+            success: function (data){
+                console.log(data);
+            } ,
+            fail: function () {
+                console.log('error');
+            }
+        });
+    }
+
+}
+
+function validateCreateProductData(){
+    return true;
+}
+
+function updateProduct(id){
+    let data = {};
+    data["productsId"] = id;
+    data["tableName"] = $(document).find('.hierarchy .tableName').attr("value");
+    data["fields"] = [];
+    $(document).find('.last-level .field-for-level tbody tr').each(function () {
+        data.fields.push(
+            {   "fieldName":$(this).find('.fieldName').attr("fieldName"),
+                "value"    : $(this).find('.value input').val(),
+                "dataType" : $(this).find('.fieldName').attr("dataType")});
+    });
+
+    console.log(data);
+
+    if(validateUpdateProductData()){
+        $.ajax({
+            contentType: 'application/json',
+            type: "POST",
+            dataType: "json",
+            data: JSON.stringify(data),
+            url: "http://localhost:8080/hierarchy_update/update",
+            success: function (data){
+                console.log(data);
+            } ,
+            fail: function () {
+                console.log('error');
+            }
+        });
+    }
+}
+
+function validateUpdateProductData(){
+    return true;
+}

@@ -1,11 +1,13 @@
 package by.compit.tereh.service.controller;
 
 import by.compit.tereh.service.dto.LevelUpdateData;
+import by.compit.tereh.service.model.product.Product;
 import by.compit.tereh.service.model.product_hierarchy.ProductGroup;
 import by.compit.tereh.service.model.product_hierarchy.ProductHierarchy;
 import by.compit.tereh.service.repository.product.ProductJDBCRepository;
 import by.compit.tereh.service.service.ProductGroupService;
 import by.compit.tereh.service.service.ProductHierarchyService;
+import by.compit.tereh.service.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +27,7 @@ public class UpdateHierarchyController {
     private ProductHierarchyService productHierarchyService;
 
     @Autowired
-    private ProductJDBCRepository productJDBCRepository;
+    private ProductService productService;
 
 
     @RequestMapping(method = RequestMethod.GET,value = "/get_hierarchy")
@@ -50,9 +52,15 @@ public class UpdateHierarchyController {
         return productHierarchyList;
     }
 
-    @RequestMapping(method = RequestMethod.POST,value = "/update_level")
+    @RequestMapping(method = RequestMethod.POST,value = "/update")
     @ResponseBody
     public Integer updateHierarchyLevel(@RequestBody LevelUpdateData levelUpdateData){
-        return productJDBCRepository.updateHierarchyLevel(levelUpdateData);
+        return productService.updateHierarchyLevel(levelUpdateData);
+    }
+
+    @RequestMapping(method = RequestMethod.POST,value = "/create-product")
+    @ResponseBody
+    public Long createProduct(@RequestBody LevelUpdateData levelUpdateData){
+        return productService.createProduct(levelUpdateData).getId();
     }
 }
