@@ -6,7 +6,7 @@ $('#thirdLevelProductGroup').change(function () {
         type: "POST",
         dataType: "json",
         data: JSON.stringify(productGroupId),
-        url: "http://localhost:8080/hierarchy_update/get_hierarchies_by_group",
+        url: "get_hierarchies_by_group",
         success: function (data){
             console.log(data);
             deleteOptionsFromSelect("#hierarchy-list")
@@ -122,7 +122,7 @@ $('#product-table').on('click', 'tbody tr', function () {
 });
 
 $('.save-change-level-button').on('click',function () {
-    let data = {};
+    /*let data = {};
     data["productsId"] = [];
     data["fields"] = {};
     data["productGroup"] = $(document).find('.hierarchy .productGroupId').attr("value");
@@ -133,22 +133,89 @@ $('.save-change-level-button').on('click',function () {
 
     $(this).closest('.level-data').find('tbody tr').each(function () {
         data.fields["\"" + $(this).find('.fieldName').attr("fieldName")+"\""] = $(this).find('.value input').val();
-    });
+    });*/
+    let idStruct = $(this).closest('.level-data').find('#select-criterion-for-level').attr('productHierStructId');
+    let valueStruct = $(this).closest('.level-data').find('#select-criterion-for-level').val();
+    let levelNumber = $(this).closest('.level-data').find('.level-number').html();
+    let products = parseProducts();
 
-    $.ajax({
-        contentType: 'application/json',
-        type: "POST",
-        dataType: "json",
-        data: JSON.stringify(data),
-        url: "http://localhost:8080/hierarchy_update/update_level",
-        success: function (data){
-            console.log(data);
-        } ,
-        fail: function () {
-            console.log('error');
-        }
+    let data = {};
+    data["productsId"] = [];
+    products.forEach(product => {
+        product.productHierValues.forEach(productHierValue => {
+            if(productHierValue.productHierarchyStructLevel === levelNumber){
+                if(productHierValue.productHierarchyStructId === idStruct && productHierValue.value === valueStruct){
+                    data.productsId.push(product.id);
+                }
+            }
+        })
+    })
+    data["tableName"] = $(document).find('.hierarchy .tableName').attr("value");
+    data["fields"] = [];
+    $(this).closest('.level-data').find('.field-for-level tbody tr').each(function () {
+        data.fields.push(
+            {   "fieldName":$(this).find('.fieldName').attr("fieldName"),
+                "value"    : $(this).find('.value input').val(),
+                "dataType" : $(this).find('.fieldName').attr("dataType")});
     });
-});
+    console.log(data);
+    console.log(validateLevelUpdate(data));
+
+    if(validateLevelUpdate(data)){
+        $.ajax({
+            contentType: 'application/json',
+            type: "POST",
+            dataType: "json",
+            data: JSON.stringify(data),
+            url: "update",
+            success: function (data){
+                console.log(data);
+            } ,
+            fail: function () {
+                console.log('error');
+            }
+        });
+    }
+    }
+);
+
+function validateLevelUpdate(data) {
+    if(data.productsId.length < 1){
+        return false;
+    }
+    return true;
+}
+
+function parseProducts(){
+    let products = [];
+    $(document).find('#product-table tbody tr').each(function () {
+        if ($(this).attr('type') !== "NEW") {
+            let product = {};
+            product["id"] = $(this).find('.id').html();
+            product["productCode"] = $(this).find('.productCode').html();
+            product["productName"] = $(this).find('.productName').html();
+            product["productHierValues"] = [];
+            product["fields"] = [];
+            $(this).find('.productHierValues').children().each(function () {
+                let productHierValue = {};
+                productHierValue["id"] = $(this).find('.id').html();
+                productHierValue["value"] = $(this).find('.value').html();
+                productHierValue["productHierarchyStructId"] = $(this).find('.productHierarchyStructId').html();
+                productHierValue["productHierarchyStructLevel"] = $(this).find('.productHierarchyStructLevel').html();
+                product.productHierValues.push(productHierValue);
+            });
+            $(this).find('.info').children().each(function () {
+                let field = {};
+                field["fieldName"] = $(this).attr('class');
+                field["value"] = $(this).html();
+                product.fields.push(field);
+            });
+            products.push(product);
+        }
+    })
+    //console.log(products);
+    return products;
+}
 
 $('.save-change-product-button').on('click',function () {
 
@@ -274,7 +341,7 @@ function updateProduct(id){
             type: "POST",
             dataType: "json",
             data: JSON.stringify(data),
-            url: "http://localhost:8080/hierarchy_update/update",
+            url: "update",
             success: function (data){
                 console.log(data);
             } ,

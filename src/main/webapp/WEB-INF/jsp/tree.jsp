@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Tree</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tree.css">
+
 </head>
 <body>
 
@@ -58,72 +58,15 @@
 
     <div class="tree">
         <div onclick="tree_toggle(arguments[0])">
-            <div>Root</div>
             <ul class="Container">
-                <c:forEach items="${tree}" var="element">
-                    <li class="Node ExpandClosed">
-                        <div class="Expand"></div>
-                        <div class="Info" hidden>
-                            <div class="id">${element.id}</div>
-                            <div class="hiId">${element.hiId}</div>
-                            <div class="lev">${element.lev}</div>
-                            <div class="typ">${element.typ}</div>
-                            <div class="realId">${element.realId}</div>
-                            <div class="realHiId">${element.realHiId}</div>
-                        </div>
-                        <div class="Content">${element.name}</div>
-                        <c:if test="${not empty element.child}">
-                            <ul class="Container"></ul>
-                        </c:if>
-                    </li>
+                <c:forEach items="${tree.child}" var="element">
+                    <c:set var="element" value="${element}" scope="request"/>
+                    <jsp:include page="treeElement.jsp"/>
                 </c:forEach>
-                <li class="Node ExpandClosed">
-                    <div class="Expand"></div>
-                    <div class="Content">Item 1</div>
-                    <ul class="Container">
-                        <li class="Node ExpandClosed">
-                            <div class="Expand"></div>
-                            <div class="Content">Item 1.1</div>
-                            <ul class="Container">
-                                <li class="Node ExpandLeaf">
-                                    <div class="Expand"></div>
-                                    <div class="Content">Item 1.1.2</div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="Node ExpandLeaf">
-                            <div class="Expand"></div>
-                            <div class="Content">Item 1.2</div>
-                        </li>
-                    </ul>
-                </li>
-                <li class="Node ExpandClosed">
-                    <div class="Expand"></div>
-                    <div class="Content">Item 2</div>
-                    <ul class="Container">
-                        <li class="Node ExpandLeaf">
-                            <div class="Expand"></div>
-                            <div class="Content">Item 2.1</div>
-                        </li>
-                    </ul>
-                </li>
-                <li class="Node ExpandClosed">
-                    <div class="Expand"></div>
-                    <div class="Content">Item 3</div>
-                    <ul class="Container">
-                        <li class="Node ExpandLeaf">
-                            <div class="Expand"></div>
-                            <div class="Content">Item 3.1</div>
-                        </li>
-                    </ul>
-                </li>
             </ul>
         </div>
     </div>
 
 
-
-
-    <script src="${pageContext.request.contextPath}/js/tree.js"></script>
 </body>
 </html>

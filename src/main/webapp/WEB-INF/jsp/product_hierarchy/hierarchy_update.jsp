@@ -48,7 +48,7 @@
     </div>
 
     <div class="filter-hierarchy-tree-block">
-        <form method="get" action="${pageContext.request.contextPath}/hierarchy_update/get_hierarchy" class="filter-form" id="filter-form">
+        <form method="get" action="${pageContext.request.contextPath}/hierarchy_update/tree" class="filter-form" id="filter-form">
             <div class="filter-hierarchy-tree">
                 <select name="firstLevelProductGroup" class="group-hierarchy-list" id="firstLevelProductGroup"  required>
                     <option value="0" selected disabled>Бизнес-направление</option>
@@ -74,6 +74,19 @@
         </form>
     </div>
 
+    <c:if test="${not empty tree}">
+        <div class="tree">
+        <div onclick="tree_toggle(arguments[0])">
+            <div>Дерево</div>
+            <ul class="Container">
+                <c:forEach items="${tree.child}" var="element">
+                    <c:set var="element" value="${element}" scope="request"/>
+                    <jsp:include page="../treeElement.jsp"/>
+                </c:forEach>
+            </ul>
+        </div>
+    </div
+    </c:if>
     <c:if test="${not empty fullProductHierarchyDTO}">
         <div class="hierarchy">
             <div class="hierarchy-header">
@@ -97,6 +110,7 @@
                 <div class="level-of-hierarchy">
                     <label class="level-current">Уровень ${level.level}</label>
                     <div class="level-data">
+                        <div class="level-number" hidden>${level.level}</div>
                         <label class="label-for-select" for="select-criterion-for-level">Название уровня</label>
                         <div class="level-values">
                             <select name="criterionForLevel" class="form-control criterionList" id="select-criterion-for-level" productHierStructId="${level.productHierStructId}" required>
@@ -218,7 +232,7 @@
                                             <td class="fieldName" fieldName="${field.fieldName}" dataLength="${field.dataLength}" dataType="${field.dataType}" id="${field.id}">${field.name}</td>
                                             <c:forEach items="${fullProductHierarchyDTO.productList.get(0).realProduct}" var="entry">
                                                 <c:if test="${field.fieldName eq entry.key}">
-                                                    <td class="value"><input name="${entry.key}" type="text" value="${entry.value}"></td>
+                                                    <td class="value"><input name="${entry.key}" type="text" value=""></td>
                                                 </c:if>
                                             </c:forEach>
                                         </tr>
@@ -254,7 +268,6 @@
 
 
 <script src="${pageContext.request.contextPath}/js/tree.js"></script>
-
 <script src="${pageContext.request.contextPath}/js/jquery-3.4.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/popper/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap/bootstrap.js"></script>

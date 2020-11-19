@@ -1,6 +1,7 @@
 package by.compit.tereh.service.controller;
 
 import by.compit.tereh.service.repository.TreeRepository;
+import by.compit.tereh.service.service.TreeForUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TreeController {
 
     @Autowired
-    private TreeRepository treeRepository;
+    private TreeForUpdateService treeForUpdateService;
 
     @GetMapping
     public String getTree(Model model){
-        model.addAttribute("tree",treeRepository.getTree(null,null,null));
+        model.addAttribute("tree",treeForUpdateService.getTree(null,null,null));
         return "tree";
     }
 }

@@ -8,6 +8,7 @@ import by.compit.tereh.service.repository.product.ProductJDBCRepository;
 import by.compit.tereh.service.service.ProductGroupService;
 import by.compit.tereh.service.service.ProductHierarchyService;
 import by.compit.tereh.service.service.ProductService;
+import by.compit.tereh.service.service.TreeForUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,9 @@ import java.util.List;
 @RequestMapping("/hierarchy_update")
 public class UpdateHierarchyController {
     private static final String GET_HIERARCHY_UPDATE_VIEW = "product_hierarchy/hierarchy_update";
+
+    @Autowired
+    private TreeForUpdateService treeForUpdateService;
 
     @Autowired
     private ProductGroupService productGroupService;
@@ -40,6 +44,18 @@ public class UpdateHierarchyController {
 
     @GetMapping
     public String getProductHierarchy(Model model){
+        model.addAttribute("productGroups",productGroupService.getProductGroupTreeDTOList());
+        model.addAttribute("hierarchies",productHierarchyService.findAllNamesAndId());
+        return GET_HIERARCHY_UPDATE_VIEW;
+    }
+
+    @RequestMapping(method = RequestMethod.GET,value = "/tree")
+    public String getTree(@RequestParam(required = false) Long firstLevelProductGroup ,
+                          @RequestParam(required = false) Long secondLevelProductGroup,
+                          @RequestParam(required = false) Long thirdLevelProductGroup,
+                          @RequestParam(required = false) Long hierarchyGroup,
+                          Model model){
+        model.addAttribute("tree",treeForUpdateService.getTree(firstLevelProductGroup,secondLevelProductGroup,thirdLevelProductGroup));
         model.addAttribute("productGroups",productGroupService.getProductGroupTreeDTOList());
         model.addAttribute("hierarchies",productHierarchyService.findAllNamesAndId());
         return GET_HIERARCHY_UPDATE_VIEW;
