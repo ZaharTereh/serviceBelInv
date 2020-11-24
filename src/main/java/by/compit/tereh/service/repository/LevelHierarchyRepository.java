@@ -84,7 +84,6 @@ public class LevelHierarchyRepository {
         StringBuilder query = new StringBuilder("select c.table_name, c.column_name, c.comments, f.data_type, f.data_length from user_col_comments c, user_tab_columns f\n" +
                 "where c.TABLE_NAME = f.TABLE_NAME and c.COLUMN_NAME = f.COLUMN_NAME and c.TABLE_NAME = ");
         query.append("'").append(tableName).append("'");
-
         Long id = 1L;
         for (Map<String,Object> entity:jdbcTemplate.queryForList(query.toString())) {
             fieldList.add(Field.builder()

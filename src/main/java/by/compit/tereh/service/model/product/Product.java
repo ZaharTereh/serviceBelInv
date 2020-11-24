@@ -3,6 +3,7 @@ package by.compit.tereh.service.model.product;
 import by.compit.tereh.service.model.product_hierarchy.ProductGroup;
 import by.compit.tereh.service.model.product_hierarchy.ProductHierValue;
 import by.compit.tereh.service.model.product_hierarchy.ProductHierarchy;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,12 +37,13 @@ public class Product {
     @JoinColumn(name = "PRODUCT_HIERARCHY_ID")
     private ProductHierarchy productHierarchy;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<ProductHierValue> productHierValues;
 
     @Column(name = "BN_ID")
-    private Long bn_id;
+    private Long bnId;
 
     @Column(name = "DB_ID")
-    private Long db_id;
+    private Long dbId;
 }

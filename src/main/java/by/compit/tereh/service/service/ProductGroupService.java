@@ -20,7 +20,11 @@ public class ProductGroupService {
     private ProductGroupRepository productGroupRepository;
 
     public List<ProductGroupTreeDTO> getProductGroupTreeDTOList(){
-        return productGroupTreeRepository.getTreeProductGroup();
+        return productGroupTreeRepository.getThirdLevelProductGroupTree();
+    }
+
+    public List<ProductGroupTreeDTO> getFifthLevelGroups(){
+        return productGroupTreeRepository.getFifthLevelProductGroupTree();
     }
 
     public List<ProductGroup> findAll(){

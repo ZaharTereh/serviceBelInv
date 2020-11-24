@@ -40,7 +40,6 @@ public class ProductHierarchyService {
 
 
 
-
     @Transactional
     public List<FullProductHierarchyDTO> getProductHierarchyByProductGroups(Long pg1, Long pg2, Long pg3){
         List<FullProductHierarchyDTO> fullProductHierarchyDTOList = FullProductHierarchyDTO.toDTOList(hierarchyRepository.getProductHierarchyByProductGroups(pg1, pg2, pg3));

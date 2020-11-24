@@ -305,7 +305,7 @@ function createProduct(){
             type: "POST",
             dataType: "json",
             data: JSON.stringify(data),
-            url: "http://localhost:8080/hierarchy_update/create-product",
+            url: "create-product",
             success: function (data){
                 console.log(data);
             } ,

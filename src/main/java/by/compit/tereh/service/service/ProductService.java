@@ -36,6 +36,27 @@ public class ProductService {
     }
 
     @Transactional
+    public List<Product> findAllByProductGroup(Long productGroupId){
+        return productRepository.findAllByProductGroupId(productGroupId);
+    }
+    @Transactional
+    public List<Product> findAllByProductGroupIdAndBnId(Long productGroupId,Long bnId){
+        return productRepository.findAllByProductGroupIdAndBnId(productGroupId,bnId);
+    }
+    @Transactional
+    public List<Product> findAllByProductGroupIdAndBnIdAndDbId(Long productGroupId,Long bnId,Long dbId){
+        return productRepository.findAllByProductGroupIdAndBnIdAndDbId(productGroupId,bnId,dbId);
+    }
+
+    @Transactional
+    public Product updateBnIdAndDbId(Long id,Long bnId,Long dbId){
+        Product product = productRepository.findById(id).get();
+        product.setBnId(bnId);
+        product.setDbId(dbId);
+        return productRepository.save(product);
+    }
+
+    @Transactional
     public List<ProductDTO> getProductAsMapByHierarchyId(Long productHierarchyId){
         List<ProductDTO> productDTOList = new ArrayList<>();
         List<Product> productList = getProductsByHierarchyId(productHierarchyId);
@@ -79,7 +100,7 @@ public class ProductService {
             for (Product product : productList) {
                 productDTOList.add(ProductDTO.builder()
                         .product(product)
-                        .realProduct(productJDBCRepository.getProductAsMapByProductIdAndGroupId(product.getProductId(), productGroup))
+                        .realProduct(productJDBCRepository.getProductAsMapByProductIdAndGroupId(product.getProductId(), product.getProductGroup().getTableName()))
                         .build());
             }
 
@@ -111,5 +132,10 @@ public class ProductService {
         productHierValueRepository.saveAll(product.getProductHierValues());
 
         return product;
+    }
+
+    @Transactional
+    public String getNameOfProductById(String tableName,String nameOfField, Long id){
+        return productJDBCRepository.getNameOfProductById(tableName,nameOfField,id);
     }
 }

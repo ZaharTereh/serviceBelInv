@@ -85,8 +85,8 @@
                 </c:forEach>
             </ul>
         </div>
-    </div
     </c:if>
+
     <c:if test="${not empty fullProductHierarchyDTO}">
         <div class="hierarchy">
             <div class="hierarchy-header">

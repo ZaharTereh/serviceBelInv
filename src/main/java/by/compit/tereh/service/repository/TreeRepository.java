@@ -108,6 +108,17 @@ public class TreeRepository {
             "CONNECT BY PRIOR id = hi_id\n" +
             "START WITH hi_id IS NULL";
 
+    private static final String GET_PRODUCT_GROUP_5_LEVELS_QUERY = "SELECT id id,\n" +
+            "       hi_id HI_ID,\n" +
+            "       name,\n" +
+            "       LEVEL lev\n" +
+            "FROM product_group\n" +
+            "WHERE  LEVEL = 1 AND (:a1 IS NULL OR id = :a1)\n" +
+            "   OR LEVEL = 2 AND (:a2 IS NULL OR id = :a2)\n" +
+            "   OR LEVEL = 3 AND (:a3 IS NULL OR id = :a3)\n" +
+            "CONNECT BY PRIOR id = hi_id\n" +
+            "START WITH hi_id IS NULL";
+
     @SuppressWarnings("unchecked")
     public List<TreeElement> getTree(Long pg1, Long pg2, Long pg3){
         List<Tuple> tupleList = entityManager.createNativeQuery(QUERY_GET_HIERARCHY_TREE,Tuple.class)
@@ -126,6 +137,28 @@ public class TreeRepository {
                 .realId(tuple.get("REAL_ID", BigDecimal.class).longValue())
                 .child(new ArrayList<>())
                 .build()).collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<TreeElement> getFifthLevelTree(Long pg1, Long pg2, Long pg3){
+        List<Tuple> tupleList = entityManager.createNativeQuery(GET_PRODUCT_GROUP_5_LEVELS_QUERY,Tuple.class)
+                .setParameter("a1", new TypedParameterValue(StandardBasicTypes.LONG, pg1))
+                .setParameter("a2", new TypedParameterValue(StandardBasicTypes.LONG, pg2))
+                .setParameter("a3", new TypedParameterValue(StandardBasicTypes.LONG, pg3))
+                .getResultList();
+
+        List<TreeElement> treeElementList = tupleList.stream().map(tuple->TreeElement.builder()
+                .id(tuple.get("ID").toString())
+                .hiId(String.valueOf(convertToLong(tuple.get("HI_ID", BigDecimal.class))))
+                .lev(tuple.get("LEV", BigDecimal.class).byteValue())
+                .name(tuple.get("NAME", String.class))
+                .child(new ArrayList<>())
+                .build()).collect(Collectors.toList());
+        treeElementList.forEach(treeElement -> {
+            treeElement.setRealId(Long.parseLong(treeElement.getId()));
+        });
+
+        return treeElementList;
     }
 
     private Long convertToLong(BigDecimal bigDecimal){

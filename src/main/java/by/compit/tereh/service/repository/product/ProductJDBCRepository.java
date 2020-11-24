@@ -1,8 +1,11 @@
 package by.compit.tereh.service.repository.product;
 
+import antlr.ANTLRStringBuffer;
 import by.compit.tereh.service.dto.LevelUpdateData;
 import by.compit.tereh.service.model.product_hierarchy.Field;
 import by.compit.tereh.service.model.product_hierarchy.ProductHierValue;
+import by.compit.tereh.service.model.tree.TreeElement;
+import javafx.beans.binding.StringBinding;
 import org.apache.catalina.LifecycleState;
 import org.hibernate.jpa.TypedParameterValue;
 import org.hibernate.type.StandardBasicTypes;
@@ -32,14 +35,14 @@ public class ProductJDBCRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Map<String,Object> getProductAsMapByProductIdAndGroupId(Long productId,Long productGroup){
-        String nameOfTable = null;
+    public Map<String,Object> getProductAsMapByProductIdAndGroupId(Long productId,String tableName){
+        /*String nameOfTable = null;
         switch (productGroup.intValue()){
             case 1:nameOfTable = "CARD";break;
             case 2:nameOfTable = "CREDIT";break;
             case 3:nameOfTable = "DEBIT";break;
-        }
-        return jdbcTemplate.queryForMap("SELECT * FROM " + nameOfTable + " WHERE ID = " + productId);
+        }*/
+        return jdbcTemplate.queryForMap("SELECT * FROM " + tableName + " WHERE ID = " + productId);
     }
 
     public int updateHierarchyLevel(List<Field> fields,String tableName,List<String> productsId){
@@ -136,6 +139,7 @@ public class ProductJDBCRepository {
     }
 
     public Long createRealProduct(List<Field> fields, String tableName){
+
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate.getDataSource());
         simpleJdbcInsert.withTableName(tableName);
         simpleJdbcInsert.usingGeneratedKeyColumns("ID");
@@ -148,7 +152,8 @@ public class ProductJDBCRepository {
                 if(field.getValue().equals("")){
                     parameters.addValue(field.getFieldName(),null);
                 }else {
-                    parameters.addValue(field.getFieldName(), field.getValue()); }
+                    parameters.addValue(field.getFieldName(), field.getValue());
+                }
             }else{
                 if(field.getValue().equals("")){
                     parameters.addValue(field.getFieldName(),null);
@@ -193,6 +198,11 @@ public class ProductJDBCRepository {
         System.out.println(QUERY);*/
         Number id = simpleJdbcInsert.executeAndReturnKey(parameters);
         return id.longValue();
+    }
+
+    public String getNameOfProductById(String tableName,String nameOfField, Long id){
+        List<String> name = jdbcTemplate.queryForList("SELECT " + nameOfField + " as name FROM " + tableName + " WHERE ID=" + id,String.class);
+        return name.stream().findFirst().get();
     }
 
 }

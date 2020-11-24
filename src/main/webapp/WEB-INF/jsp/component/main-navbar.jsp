@@ -42,6 +42,11 @@
                             Обновление линейки
                         </a>
                     </li>
+                    <li>
+                        <a class="nav-link" href="<c:url value="/product_placing"/>">
+                            Продукты
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<c:url value="/nsi"/>">НСИ</a>
                     </li>

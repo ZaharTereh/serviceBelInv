@@ -53,6 +53,11 @@
                     </a>
                 </li>
                 <li>
+                    <a class="nav-link" href="<c:url value="/product_placing"/>"><span class="fa fa-sticky-note mr-3"></span>
+                        Продукты
+                    </a>
+                </li>
+                <li>
                     <a class="nav-link" href="<c:url value="/nsi"/>"><span class="fa fa-sticky-note mr-3"></span>
                         НСИ
                     </a>
